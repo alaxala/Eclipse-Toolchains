@@ -1,0 +1,20 @@
+<template type="TemplateType" version="Version" supplier="Supplier"
+	revision="Revision" author="Author" id="TemplateId"
+	label="Template label visible to the user" description="A brief description of the template">
+
+	<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
+		<simple name="name" value="$(projectName)" />
+	</process>
+
+	<process type="org.eclipse.cdt.core.CreateSourceFolder">
+		<simple name="projectName" value="$(projectName)" />
+		<simple name="path" value="src" />
+	</process>
+
+	<process type="org.eclipse.cdt.managedbuilder.core.CreateIncludeFolder">
+		<simple name="projectName" value="$(projectName)" />
+		<simple name="path" value="inc" />
+	</process>
+
+
+</template>

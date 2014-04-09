@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.eclipse.cdt.stm8.toolchain"
+         name="STM8 Toolchain"
+         point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
+      <projectType
+            buildArtefactType="org.eclipse.cdt.stm8.toolchain.propertyValue2"
+            id="stm8.toolchain.executable"
+            isAbstract="false"
+            isTest="false">
+         <configuration
+               cleanCommand="rm -f"
+               errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.VCErrorParser"
+               id="stm8.toolchain.configuration.release"
+               name="Release">
+            <toolChain
+                  id="stm8.toolchain.toolchain"
+                  isAbstract="false"
+                  name="STM8 Toolchain"
+                  osList="win32">
+               <builder
+                     command="make"
+                     id="stm8.toolchain.builder"
+                     isAbstract="false"
+                     isVariableCaseSensitive="false"
+                     name="STM8 Builder">
+               </builder>
+               <targetPlatform
+                     binaryParser="org.eclipse.cdt.core.PE"
+                     id="stm8.toolchain.targetPlatform"
+                     isAbstract="false"
+                     name="STM8 Target"
+                     osList="win32">
+               </targetPlatform>
+               <tool
+                     command="cxstm8"
+                     id="stm8.toolchain.compiler"
+                     isAbstract="false"
+                     name="Compiler"
+                     natureFilter="cnature"
+                     outputFlag="-eg">
+                  <inputType
+                        dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.internal.DefaultIndexerDependencyCalculator"
+                        dependencyContentType="org.eclipse.cdt.core.cHeader"
+                        id="stm8.toolchain.compiler.input"
+                        name="Compiler Input"
+                        primaryInput="true"
+                        sourceContentType="org.eclipse.cdt.core.cSource">
+                  </inputType>
+                  <outputType
+                        buildVariable="OBJS"
+                        id="stm8.toolchain.compiler.output"
+                        name="Compiler Output"
+                        outputs="o"
+                        primaryOutput="true">
+                  </outputType>
+                  <optionCategory
+                        id="stm8.toolchain.compiler.optionCategory.general"
+                        name="General"
+                        owner="stm8.toolchain.compiler">
+                  </optionCategory>
+                  <option
+                        browseType="directory"
+                        category="stm8.toolchain.compiler.optionCategory.general"
+                        command="-i"
+                        id="stm8.toolchain.compiler.general.incpath"
+                        isAbstract="false"
+                        name="Include Path"
+                        resourceFilter="all"
+                        valueType="includePath">
+                  </option>
+                  <option
+                        category="stm8.toolchain.compiler.optionCategory.general"
+                        id="stm8.toolchain.compiler.general.other"
+                        isAbstract="false"
+                        name="Other Flags"
+                        resourceFilter="all"
+                        valueType="string">
+                  </option>
+                  <option
+                        category="stm8.toolchain.compiler.optionCategory.general"
+                        command="-no"
+                        id="stm8.toolchain.compiler.general.optimizer"
+                        isAbstract="false"
+                        name="Do not use optimizer"
+                        resourceFilter="all"
+                        valueType="boolean">
+                  </option>
+               </tool>
+            </toolChain>
+         </configuration>
+      </projectType>
+   </extension>
+   <extension
+         id="stm8.toolchain.buildproperty"
+         name="STM8 Toolchain"
+         point="org.eclipse.cdt.managedbuilder.core.buildProperties">
+      <propertyValue
+            id="org.eclipse.cdt.stm8.toolchain.propertyValue2"
+            name="STM8 Toolchain"
+            property="org.eclipse.cdt.build.core.buildArtefactType">
+      </propertyValue>
+   </extension>
+   <extension
+         point="org.eclipse.cdt.core.templates">
+      <template
+            id="org.eclipse.cdt.stm8.toolchain.template2"
+            location="src/tmpl1.xml"
+            projectType="org.eclipse.cdt.stm8.toolchain.propertyValue2">
+         <toolChain
+               id="stm8.toolchain.toolchain">
+         </toolChain>
+      </template>
+   </extension>
+
+</plugin>
