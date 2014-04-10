@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Microchip_Toolchain
+Bundle-SymbolicName: Microchip_Toolchain
+Bundle-Version: 1.0.0.qualifier

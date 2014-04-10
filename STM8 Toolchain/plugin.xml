@@ -35,63 +35,615 @@
                      osList="win32">
                </targetPlatform>
                <tool
-                     command="cxstm8"
-                     id="stm8.toolchain.compiler"
+                     id="stm8.toolchain.ReleaseParser"
                      isAbstract="false"
-                     name="Compiler"
-                     natureFilter="cnature"
-                     outputFlag="-eg">
-                  <inputType
-                        dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.internal.DefaultIndexerDependencyCalculator"
-                        dependencyContentType="org.eclipse.cdt.core.cHeader"
-                        id="stm8.toolchain.compiler.input"
-                        name="Compiler Input"
-                        primaryInput="true"
-                        sourceContentType="org.eclipse.cdt.core.cSource">
-                  </inputType>
-                  <outputType
-                        buildVariable="OBJS"
-                        id="stm8.toolchain.compiler.output"
-                        name="Compiler Output"
-                        outputs="o"
-                        primaryOutput="true">
-                  </outputType>
-                  <optionCategory
-                        id="stm8.toolchain.compiler.optionCategory.general"
-                        name="General"
-                        owner="stm8.toolchain.compiler">
-                  </optionCategory>
-                  <option
-                        browseType="directory"
-                        category="stm8.toolchain.compiler.optionCategory.general"
-                        command="-i"
-                        id="stm8.toolchain.compiler.general.incpath"
-                        isAbstract="false"
-                        name="Include Path"
-                        resourceFilter="all"
-                        valueType="includePath">
-                  </option>
-                  <option
-                        category="stm8.toolchain.compiler.optionCategory.general"
-                        id="stm8.toolchain.compiler.general.other"
-                        isAbstract="false"
-                        name="Other Flags"
-                        resourceFilter="all"
-                        valueType="string">
-                  </option>
-                  <option
-                        category="stm8.toolchain.compiler.optionCategory.general"
-                        command="-no"
-                        id="stm8.toolchain.compiler.general.optimizer"
-                        isAbstract="false"
-                        name="Do not use optimizer"
-                        resourceFilter="all"
-                        valueType="boolean">
-                  </option>
+                     name="STM8 Parser"
+                     superClass="stm8.toolchain.parser">
+               </tool>
+               <tool
+                     id="stm8.toolchain.ReleaseCodeGenerator"
+                     isAbstract="false"
+                     name="STM8 Code generator"
+                     superClass="stm8.toolchain.CodeGenerator">
+               </tool>
+               <tool
+                     id="stm8.toolchain.ReleaseAssembler"
+                     isAbstract="false"
+                     name="STM8 Assembler"
+                     superClass="stm8.toolchain.assembler">
+               </tool>
+               <tool
+                     id="stm8.toolchain.releaselinker"
+                     isAbstract="false"
+                     name="STM8 Linker"
+                     superClass="stm8.toolchain.linker">
                </tool>
             </toolChain>
          </configuration>
       </projectType>
+      <tool
+            command="cpstm8"
+            id="stm8.toolchain.parser"
+            isAbstract="true"
+            name="STM8 C Abstract Parser"
+            natureFilter="cnature"
+            outputFlag="-o">
+         <inputType
+               dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.internal.DefaultIndexerDependencyCalculator"
+               dependencyContentType="org.eclipse.cdt.core.cHeader"
+               id="stm8.toolchain.parser.input"
+               name="Parser Input"
+               primaryInput="true"
+               sourceContentType="org.eclipse.cdt.core.cSource">
+         </inputType>
+         <outputType
+               buildVariable="OBJS"
+               id="stm8.toolchain.parser.output"
+               name="Parser Output"
+               outputs="1"
+               primaryOutput="true">
+         </outputType>
+         <optionCategory
+               id="stm8.toolchain.parser.optionCategory.CLang"
+               name="C Language"
+               owner="stm8.toolchain.parser">
+         </optionCategory>
+         <option
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               command="-ad"
+               id="stm8.toolchain.parser.options.DefineInAsm"
+               isAbstract="false"
+               name="Expand defines in inline assembly code"
+               resourceFilter="all"
+               tip="enable #define expansion inside inline assembly code between #asm and #endasm directives. By default, #define symbols are expanded only in the C code."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               command="-c99"
+               id="stm8.toolchain.parser.options.ConstRep"
+               isAbstract="false"
+               name="Authorize the repetition const and volatile modifiers"
+               resourceFilter="all"
+               tip="authorize the repetition of the const and volatile modifiers in the declaration either directly or indirectly in the typedef."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               command="-ck"
+               id="stm8.toolchain.parser.options.ExtraTypeChecking"
+               isAbstract="false"
+               name="Extra Type checking"
+               resourceFilter="all"
+               tip="enable extra type checking."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               command="-csb"
+               id="stm8.toolchain.parser.options.SignedBitfield"
+               isAbstract="false"
+               name="Error if bitfield is declared explicitly signed"
+               resourceFilter="all"
+               tip="produce an error message if a bitfield is declared explicitly with the signed keyword. By default, the compiler silently ignores the signed feature and handles all bitfields as unsigned values."
+               valueType="boolean">
+         </option>
+         <optionCategory
+               id="stm8.toolchain.parser.optionCategory.Optimization"
+               name="Optimization"
+               owner="stm8.toolchain.parser">
+         </optionCategory>
+         <optionCategory
+               id="stm8.toolchain.parser.optionCategory.Defines"
+               name="Defines"
+               owner="stm8.toolchain.parser">
+         </optionCategory>
+         <option
+               category="stm8.toolchain.parser.optionCategory.Defines"
+               command="-d"
+               id="stm8.toolchain.parser.options.Defines"
+               isAbstract="false"
+               name="Defines"
+               resourceFilter="all"
+               valueType="definedSymbols">
+         </option>
+         <optionCategory
+               id="stm8.toolchain.parser.optionCategory.Include"
+               name="Includes"
+               owner="stm8.toolchain.parser">
+         </optionCategory>
+         <option
+               browseType="directory"
+               category="stm8.toolchain.parser.optionCategory.Include"
+               command="-i"
+               id="stm8.toolchain.compiler.options.incpath"
+               isAbstract="false"
+               name="Include Paths"
+               resourceFilter="all"
+               valueType="includePath">
+         </option>
+         <option
+               browseType="file"
+               category="stm8.toolchain.parser.optionCategory.Include"
+               command="-h"
+               id="stm8.toolchain.compiler.options.IncludeFiles"
+               isAbstract="false"
+               name="Include Files"
+               resourceFilter="all"
+               valueType="includePath">
+         </option>
+         <option
+               category="stm8.toolchain.compiler.optionCategory.general"
+               command="-no"
+               id="stm8.toolchain.compiler.options.optimizer"
+               isAbstract="false"
+               name="Do not use optimizer"
+               resourceFilter="all"
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.Optimization"
+               command="-cp"
+               id="stm8.toolchain.parser.options.ConstantOptimization"
+               isAbstract="false"
+               name="Disable the constant propagation optimization"
+               resourceFilter="all"
+               tip="disable the constant propagation optimization. By default, when a variable is assigned with a constant, any subsequent access to that variable is replaced by the constant itself until the variable is modified or a flow break is encountered."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.Optimization"
+               command="-ku"
+               id="stm8.toolchain.parser.options."
+               isAbstract="false"
+               name="Keep unused statics"
+               resourceFilter="all"
+               tip="keep unused statics. By default, unused statics are removed."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.Optimization"
+               command="-nb"
+               id="stm8.toolchain.parser.options.NotPackBitfields"
+               isAbstract="false"
+               name="Do not pack bitfields"
+               resourceFilter="all"
+               tip="do not pack bitfields. By default, trailing unused bits in the last bitfield of a structure are removed if this saves at least one byte."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.Optimization"
+               id="stm8.toolchain.parser.options.NotReplaceConst"
+               isAbstract="false"
+               name="Do not replace const objects by its value"
+               resourceFilter="all"
+               tip="do not replace an access to an initialized const object by its value. By default, the usage of a const object whose value is known is replaced by its constant value."
+               value="-nc"
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.Optimization"
+               command="-ne"
+               id="stm8.toolchain.parser.options.NotOptimizeEnums"
+               isAbstract="false"
+               name="Do not optimize enums"
+               resourceFilter="all"
+               tip="do not optimize size of enum variables. By default, the compiler selects the smallest integer type by checking the range of the declared enum members. This mechanism does not allow incomplete enum declaration. When this option is selected, all enum variables are allocated as int variables, thus allowing incomplete declarations, as the knowledge of all the members is no more necessary to choose the proper integer type."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               command="-np"
+               id="stm8.toolchain.parser.options.AllowPointerNarrowing"
+               isAbstract="false"
+               name="Allow pointer narrowing"
+               resourceFilter="all"
+               tip="allow pointer narrowing. By default, the compiler refuses to cast the pointer into any smaller object. This option should be used carefully as such conversions are truncating addresses."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.Optimization"
+               command="-ns"
+               id="stm8.toolchain.parser.options.NotShareLocalVar"
+               isAbstract="false"
+               name="Do not share independent local variables"
+               resourceFilter="all"
+               tip="do not share independent local variables. By default, the compiler tries to overlay variables in the same memory location or register if they are not used concurrently."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               command="-p"
+               id="stm8.toolchain.parser.options.EnforcePrototypeDecl"
+               isAbstract="false"
+               name="Enforce prototype declaration"
+               resourceFilter="all"
+               tip="enforce prototype declaration for functions. An error message is issued if a function is used and no prototype declaration is found for it. By default, the compiler accepts both syntaxes without any error."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.Optimization"
+               command="-pb"
+               id="stm8.toolchain.parser.options.PackBool"
+               isAbstract="false"
+               name="Pack Bool local variables"
+               resourceFilter="all"
+               tip="pack _Bool local variables. By default, _Bool local variables are allocated on one byte each."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.Optimization"
+               command="-s"
+               id="stm8.toolchain.parser.options.NotReorderVars"
+               isAbstract="false"
+               name="Do not reorder local variables"
+               resourceFilter="all"
+               tip="do not reorder local variables. By default, the compiler sorts the local variables of a function in order to allocate the most used variables as close as possible to the frame pointer. This allows to use the shortest addressing modes for the most used variables."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               command="-sa"
+               id="stm8.toolchain.parser.options.StrictANSI"
+               isAbstract="false"
+               name="Enforce strict ANSI checking"
+               resourceFilter="all"
+               tip="enforce a strict ANSI checking by rejecting any syntax or semantic extension. This option also disables the enum size optimization."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               command="-u"
+               id="stm8.toolchain.parser.options.UnsignedChar"
+               isAbstract="false"
+               name="Take a plain char to be of type unsigned char"
+               resourceFilter="all"
+               tip="take a plain char to be of type unsigned char, not signed char. This also affects in the same way strings constants."
+               valueType="boolean">
+         </option>
+         <option
+               browseType="none"
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               defaultValue="None"
+               id="stm8.toolchain.parser.options.WarningLevel"
+               isAbstract="false"
+               name="Warning level"
+               resourceFilter="all"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="stm8.toolchain.parser.options.WarningLevel.none"
+                  isDefault="true"
+                  name="None">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-w1"
+                  id="stm8.toolchain.parser.options.WarningLevel.1"
+                  isDefault="false"
+                  name="1">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-w2"
+                  id="stm8.toolchain.parser.options.WarningLevel.2"
+                  isDefault="false"
+                  name="2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-w3"
+                  id="stm8.toolchain.parser.options.WarningLevel.3"
+                  isDefault="false"
+                  name="3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-w4"
+                  id="stm8.toolchain.parser.options.WarningLevel.4"
+                  isDefault="false"
+                  name="4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-w5"
+                  id="stm8.toolchain.parser.options.WarningLevel.5"
+                  isDefault="false"
+                  name="5">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-w6"
+                  id="stm8.toolchain.parser.options.WarningLevel.6"
+                  isDefault="false"
+                  name="6">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-w7"
+                  id="stm8.toolchain.parser.options.WarningLevel.7"
+                  isDefault="false"
+                  name="7">
+            </enumeratedOptionValue>
+         </option>
+         <option
+               category="stm8.toolchain.parser.optionCategory.CLang"
+               command="-x"
+               id="stm8.toolchain.parser.options.DebugInfo"
+               isAbstract="false"
+               name="Generate debugging information"
+               resourceFilter="all"
+               valueType="boolean">
+         </option>
+         <option
+               command="-ge"
+               defaultValue="true"
+               id="stm8.toolchain.parser.options.EclipseMessages"
+               isAbstract="true"
+               name="Eclipse error messages"
+               resourceFilter="all"
+               valueType="boolean">
+         </option>
+      </tool>
+      <tool
+            command="cgstm8"
+            id="stm8.toolchain.CodeGenerator"
+            isAbstract="true"
+            name="STM8 C Abstract Code Generator"
+            natureFilter="cnature"
+            outputFlag="-o">
+         <inputType
+               dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.internal.DefaultIndexerDependencyCalculator"
+               id="stm8.toolchain.CodeGenerator.input"
+               name="Code generator input"
+               primaryInput="true"
+               sources="1">
+         </inputType>
+         <outputType
+               id="stm8.toolchain.CodeGenerator.input"
+               name="Code generator output"
+               outputs="2"
+               primaryOutput="true">
+         </outputType>
+         <optionCategory
+               id="stm8.toolchain.CodeGenerator.optioncategory.general"
+               name="General"
+               owner="stm8.toolchain.CodeGenerator">
+         </optionCategory>
+         <optionCategory
+               id="stm8.toolchain.CodeGenerator.optioncategory.optimization"
+               name="Optimization"
+               owner="stm8.toolchain.CodeGenerator">
+         </optionCategory>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.optimization"
+               command="-a"
+               id="stm8.toolchain.CodeGenerator.option.OptimizeAsm"
+               isAbstract="false"
+               name="Optimize asm code"
+               resourceFilter="all"
+               tip="optimize _asm code. By default, the assembly code inserted by a _asm call is left unchanged by the optimizer."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.general"
+               command="-bss"
+               id="stm8.toolchain.CodeGenerator.option.NotUseBSS"
+               isAbstract="false"
+               name="Do not use bss"
+               resourceFilter="all"
+               tip="inhibit generating code into the bss section."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.optimization"
+               command="-ck"
+               id="stm8.toolchain.CodeGenerator.option.StackOvfw"
+               isAbstract="false"
+               name="Enable stack overflow checking"
+               resourceFilter="all"
+               tip="enable stack overflow checking."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.general"
+               command="-ct"
+               id="stm8.toolchain.CodeGenerator.option.ConstOutput"
+               isAbstract="false"
+               name="Output constants in the .text section"
+               resourceFilter="all"
+               tip="output constant in the .text section. By default, the compiler outputs literals and constants in the .const section."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.optimization"
+               command="-dp"
+               id="stm8.toolchain.CodeGenerator.option.NoDivideProtection"
+               isAbstract="false"
+               name="No divide protection"
+               resourceFilter="all"
+               tip="do not produce any protection sequence on interrupt functions"
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.optimization"
+               command="-fl"
+               id="stm8.toolchain.CodeGenerator.option.FarLibraryCalls"
+               isAbstract="false"
+               name="Far library calls"
+               resourceFilter="all"
+               tip="use callf instruction for machine library calls, used for models allowing large applications. By default, machine library functions are called with a call instruction allowing only 64K application. This option is configured by the memory model selection."
+               valueType="boolean">
+         </option>
+         <option
+               command="-ge"
+               defaultValue="true"
+               id="stm8.toolchain.CodeGenerator.option.EclipseMessages"
+               isAbstract="true"
+               name="Eclipse messages"
+               resourceFilter="all"
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.optimization"
+               command="-i"
+               id="stm8.toolchain.CodeGenerator.option.InlineLib"
+               isAbstract="false"
+               name="Inline long machine calls"
+               resourceFilter="all"
+               tip="produce faster code by inlining machine library calls for long integers handling. The code produced will be larger than without this option."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.optimization"
+               command="-nc"
+               id="stm8.toolchain.CodeGenerator.option.NotCrossFunc"
+               isAbstract="false"
+               name="Functions do not cross sections"
+               resourceFilter="all"
+               tip="do not allow functions to cross a section boundary"
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.optimization"
+               command="-no"
+               id="stm8.toolchain.CodeGenerator.option.NotOptimize"
+               isAbstract="false"
+               name="Do not use optimizer"
+               resourceFilter="all"
+               tip="do not produce special directives for the post-optimizer."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.CodeGenerator.optioncategory.optimization"
+               command="-sf"
+               id="stm8.toolchain.CodeGenerator.option.SplitFunction"
+               isAbstract="false"
+               name="Split function sections"
+               resourceFilter="all"
+               tip="produce each function in a different section, thus allowing the linker to suppress a function if it is not used by the application. By default, all the functions are packed in a single section."
+               valueType="boolean">
+         </option>
+      </tool>
+      <tool
+            command="costm8"
+            id="stm8.toolchain.assemblyoptimizer"
+            isAbstract="true"
+            name="STM8 Abstract Assembly Optimizer"
+            natureFilter="cnature"
+            outputFlag="-o">
+         <inputType
+               dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.internal.DefaultIndexerDependencyCalculator"
+               id="stm8.toolchain.assemblyoptimizer.input"
+               name="Assembly optimizer input"
+               primaryInput="true"
+               sources="2">
+         </inputType>
+         <outputType
+               id="stm8.toolchain.assemblyoptimizer.output"
+               name="Assembly optimizer output"
+               outputs="s"
+               primaryOutput="true">
+         </outputType>
+      </tool>
+      <tool
+            command="castm8"
+            id="stm8.toolchain.assembler"
+            isAbstract="true"
+            name="STM8 Abstract Assembler"
+            natureFilter="cnature"
+            outputFlag="-o">
+         <inputType
+               dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.internal.DefaultIndexerDependencyCalculator"
+               id="stm8.toolchain.assembler.input"
+               name="Assembler input"
+               primaryInput="true"
+               sources="s">
+         </inputType>
+         <outputType
+               id="stm8.toolchain.assembler.output"
+               name="Assembler output"
+               outputs="o"
+               primaryOutput="true">
+         </outputType>
+         <optionCategory
+               id="stm8.toolchain.assembler.optioncategory.general"
+               name="General"
+               owner="stm8.toolchain.assembler">
+         </optionCategory>
+         <optionCategory
+               id="stm8.toolchain.assembler.optioncategory.optimizer"
+               name="Optimizer"
+               owner="stm8.toolchain.assembler">
+         </optionCategory>
+         <optionCategory
+               id="stm8.toolchain.assembler.optioncategory.include"
+               name="Includes"
+               owner="stm8.toolchain.assembler">
+         </optionCategory>
+         <optionCategory
+               id="stm8.toolchain.assembler.optioncategory.defines"
+               name="Defines"
+               owner="stm8.toolchain.assembler">
+         </optionCategory>
+         <option
+               category="stm8.toolchain.assembler.optioncategory.general"
+               command="-a"
+               id="stm8.toolchain.assembler.option.absolute"
+               isAbstract="false"
+               name="Absolute assembler"
+               resourceFilter="all"
+               tip="map all sections to absolute, including the predefined ones."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.assembler.optioncategory.optimizer"
+               command="-b"
+               id="stm8.toolchain.assembler.option.NotOptimizeBranches"
+               isAbstract="false"
+               name="Do not optimize branches"
+               resourceFilter="all"
+               tip="do not optimize branch instructions. By default, the assembler replaces long branches by short branches wherever a shorter instruction can be used, and short branches by long branches wherever the displacement is too large. This optimization also applies to jump and jump to subroutines instructions."
+               valueType="boolean">
+         </option>
+         <option
+               category="stm8.toolchain.assembler.optioncategory.defines"
+               command="-d"
+               id="stm8.toolchain.assembler.option.defines"
+               isAbstract="false"
+               name="Defines"
+               resourceFilter="all"
+               valueType="definedSymbols">
+         </option>
+         <option
+               command="-ge"
+               defaultValue="true"
+               id="stm8.toolchain.assembler.option.eclipsemessages"
+               isAbstract="true"
+               name="Eclipse messages"
+               resourceFilter="all"
+               valueType="boolean">
+         </option>
+         <option
+               browseType="directory"
+               category="stm8.toolchain.assembler.optioncategory.include"
+               command="-i"
+               id="stm8.toolchain.assembler.option.includepath"
+               isAbstract="false"
+               name="Include paths"
+               resourceFilter="all"
+               valueType="includePath">
+         </option>
+         <option
+               browseType="file"
+               category="stm8.toolchain.assembler.optioncategory.include"
+               command="-h"
+               id="stm8.toolchain.assembler.option.includefiles"
+               isAbstract="false"
+               name="Include files"
+               resourceFilter="all"
+               valueType="includeFiles">
+         </option>
+      </tool>
+      <tool
+            command="clnk"
+            id="stm8.toolchain.linker"
+            isAbstract="true"
+            name="STM8 Abstract Linker"
+            natureFilter="cnature">
+      </tool>
    </extension>
    <extension
          id="stm8.toolchain.buildproperty"
